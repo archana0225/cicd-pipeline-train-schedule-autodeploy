@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-		DOCKER_IMAGE_NAME=credentials('dockerhub')
+		DOCKER_IMAGE_NAME="archana0225/cicdpush"
 	}
     stages {
         stage('Build') {
@@ -31,7 +31,7 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', 'docker_hub_login') {
+                    docker.withRegistry('https://registry.hub.docker.com', credentials('dockerhub')) {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
