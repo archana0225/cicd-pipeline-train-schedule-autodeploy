@@ -13,33 +13,33 @@ pipeline {
                 archiveArtifacts artifacts: 'dist/trainSchedule.zip'
             }
         }
-        stage('Build Docker Image') {
-            when {
-                branch 'master'
-            }
-            steps {
-                script {
-                    app = docker.build(DOCKER_IMAGE_NAME)
-                    app.inside {
-                        sh 'echo Hello, World!'
-                    }
-                }
-            }
-        }
-        stage('Push Docker Image') {
-            when {
-                branch 'master'
-            }
-            steps {
-                script {
-// 		    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                    docker.withRegistry('https://registry.hub.docker.com','dockerhub') {
-                        app.push("${env.BUILD_NUMBER}")
-                        app.push("latest")
-                    }
-                }
-            }
-        }
+//         stage('Build Docker Image') {
+//             when {
+//                 branch 'master'
+//             }
+//             steps {
+//                 script {
+//                     app = docker.build(DOCKER_IMAGE_NAME)
+//                     app.inside {
+//                         sh 'echo Hello, World!'
+//                     }
+//                 }
+//             }
+//         }
+//         stage('Push Docker Image') {
+//             when {
+//                 branch 'master'
+//             }
+//             steps {
+//                 script {
+// // 		    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+//                     docker.withRegistry('https://registry.hub.docker.com','dockerhub') {
+//                         app.push("${env.BUILD_NUMBER}")
+//                         app.push("latest")
+//                     }
+//                 }
+//             }
+//         }
         stage('CanaryDeploy') {
             when {
                 branch 'master'
@@ -49,7 +49,7 @@ pipeline {
             }
             steps {
                 kubernetesDeploy(
-                    kubeconfigId: 'kubeconfig',
+//                     kubeconfigId: 'kubeconfig',
                     configs: 'train-schedule-kube-canary.yml',
                     enableConfigSubstitution: true
                 )
