@@ -32,8 +32,8 @@ pipeline {
             }
             steps {
                 script {
-		    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                    docker.withRegistry('https://registry.hub.docker.com') {
+// 		    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    docker.withRegistry('https://registry.hub.docker.com','dockerhub') {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
