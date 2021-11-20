@@ -49,7 +49,7 @@ pipeline {
             }
             steps {
                 kubernetesDeploy(
-                    kubeconfig: "~jenkins/.kube/config",
+                    kubeConfig: "~jenkins/.kube/config",
                     configs: 'train-schedule-kube-canary.yml',
                     enableConfigSubstitution: true
                 )
