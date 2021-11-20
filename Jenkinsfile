@@ -3,6 +3,7 @@ pipeline {
 
     environment {
 		DOCKER_IMAGE_NAME="archana0225/cicdpush"
+	    	DOCKERHUB_CREDENTIALS = credentials('dockerhub')
 	}
     stages {
         stage('Build') {
@@ -31,7 +32,8 @@ pipeline {
             }
             steps {
                 script {
-                    docker.withRegistry('https://registry.hub.docker.com', credentials('dockerhub')) {
+		    sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                    docker.withRegistry('https://registry.hub.docker.com') {
                         app.push("${env.BUILD_NUMBER}")
                         app.push("latest")
                     }
